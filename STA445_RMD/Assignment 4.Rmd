@@ -1,0 +1,108 @@
+---
+title: "Assignment 4"
+author: "Isaac Bragna"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(stringr)
+library(refinr  )
+```
+
+# Exercise 1
+
+**a) This regular expression matches any string that contains the lowercase grouping 'ab'**
+
+```{r}
+strings <- c('triathalon', 'slabbed', 'grape', 'balance', 'Abnormal', 'veneration', 'drab', 'laboratory', 'credit', 'funny')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, 'ab') )
+```
+
+**b) This regular expression matches any string that contains the lowercase letters 'a' or 'b'**
+
+```{r}
+strings <- c('unlawful', 'wing', 'benefit', 'clash', 'impluse', 'bare', 'praise', 'observation', 'court', 'improvement')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '[ab]') )
+```
+
+**c) This regular expression matches any string that begins with the lowercase letters 'a' or 'b'**
+
+```{r}
+strings <- c('infringe', 'rub', 'bat', 'closed', 'banish', 'freeze', 'anger', 'honorable', 'attractive', 'complete')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '^[ab]') )
+```
+
+**d) This regular expression matches any string that contains at least one digit followed by one space then any case letter 'A'/'a'**
+
+```{r}
+strings <- c('12 apples', 'San Diego', '7 arrivals', '12:00 AM', 'Sputnik')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '\\d+\\s[aA]') )
+```
+
+**e) This regularexpression matches any string that contains at least one digit followed by at least zero space then any case letter 'A'/'a'**
+
+```{r}
+strings <- c('13Apricots', 'Milwaukee', 'foraging 4', '3:15  aM', 'Apollo 11')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '\\d+\\s*[aA]') )
+```
+
+**f) This regular expression matches any string that contains zero or more repititions of any character**
+
+```{r}
+strings <- c('djksn', '2', '12/25/1996', 'isthmus', 'Shrek the Musical')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '.*') )
+```
+
+**g) This regular expression matches any string that starts with 2 alphanumeric characters followed by the letters 'bar'**
+
+```{r}
+strings <- c('fubar', 'bartend', 'babarian', 'embark', ' scabbard')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '^\\w{2}bar') )
+```
+
+**h) This regular expression matches any string that contains 'foo.bar' OR starts with 2 alphanumeric characters followed by the letters 'bar'**
+
+```{r}
+strings <- c('embark', 'fubar', 'foobar', 'pfoo.barr', 'foo.bar')
+
+data.frame( string = strings ) %>%
+  mutate( result = str_detect(string, '(foo\\.bar)|(^\\w{2}bar)') )
+```
+
+# Exercise 2
+
+**Produce a data frame with columns corresponding to the site, plot, camera, year, month, day, hour, minute, and second for these three file names**
+
+```{r}
+file.names <- c( 'S123.P2.C10_20120621_213422.jpg',
+                 'S10.P1.C1_20120622_050148.jpg',
+                 'S187.P2.C2_20120702_023501.jpg')
+
+strings <- str_replace_all(file.names, pattern = '\\.', replacement = '_')
+strings <- str_split_fixed(strings, pattern = '_', n = 6)
+
+data.frame(strings) %>%
+  
+  
+  
+  
+  
+  
+  rename(Site='X1', Plot='X2', Camera='X3', )
+```

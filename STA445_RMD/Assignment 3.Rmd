@@ -1,0 +1,104 @@
+---
+title: "Assignment 3"
+author: "Isaac Bragna"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+```
+
+# Exercise 1
+
+**Write a function that calculates the density function of a Uniform continuous variable on the interval (a,b).**
+
+```{r}
+duniform <- function(x, a, b){
+  density <- case_when(a<x&b>x ~ 1/(b-a),
+                       x<a|x>b ~ 0)
+  return(density)
+}
+duniform(1, 2, 8)     # x<a
+duniform(11, 6, 15)   # a<x<b
+duniform(13, 3, 7)    # b<x
+```
+**Part B**
+
+```{r}
+duniform2 <- function(x, a, b){
+  density <- ifelse(a<x&b>x, 1/(b-a), 0)
+  return(density)
+}
+duniform2(c(0,2,4,6), 1, 5)
+
+microbenchmark::microbenchmark( duniform( seq(-4,12,by=.0001), 4, 8), times=100)
+microbenchmark::microbenchmark( duniform2( seq(-4,12,by=.0001), 4, 8), times=100)
+```
+
+# Exercise 2
+
+**For your duniform() function provide default values of 0 and 1 for the arguments a and b. Demonstrate that your function is appropriately using the given default values by producing a graph of the density without specifying the a or b arguments.**
+
+```{r}
+duniform <- function(x, a=0, b=1){
+  density <- case_when(a<x&b>x ~ 1/(b-a),
+                       x<a|x>b ~ 0)
+  return(density)
+}
+duniform(0.5)
+duniform(4)
+duniform(11,6,15)
+```
+
+# Exercise 3
+
+**Create a function that takes an input vector of numerical values and produces an output vector of the standardized values.**
+
+```{r}
+standardize <- function( x ){
+  s_dev <- sd(x)
+  xbar <- mean(x)
+  stdzd <- c()
+  for( i in x ){
+    z = (i-xbar)/s_dev
+    stdzd <- c(stdzd, z)
+  }
+  return(stdzd)
+}
+standardize( c(1,2,3,4,5,6))
+```
+
+**Apply this function to each numeric column in a data frame**
+
+```{r}
+data( 'iris' )
+
+ggplot(iris, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+  geom_point() +
+  labs(title='Pre-Transformation')
+
+iris.z <- iris %>% mutate( across(where(is.numeric), standardize) )
+
+ggplot(iris.z, aes(x=Sepal.Length, y=Sepal.Width, color=Species)) +
+  geom_point() +
+  labs(title='Post-Transformation')
+```
+
+# Exercise 4 
+
+```{r}
+fizz_buzz <- function(n){
+  list <- seq(n)
+  FB_list <- NULL
+  for( i in list ){
+    fate <- case_when( i %% 15 == 0 ~ 'Fizz-Buzz',
+                       i %% 5 == 0 ~ 'Buzz',
+                       i %% 3 == 0 ~ 'Fizz',
+                       .default =as.character(i))
+    FB_list <- paste(FB_list, fate, sep=' ')
+  }
+  return(FB_list)
+}
+fizz_buzz(25)
+```

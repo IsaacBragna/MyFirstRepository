@@ -1,0 +1,31 @@
+---
+title: "Assignment 2"
+author: "Isaac Bragna"
+date: "`r Sys.Date()`"
+output: pdf_document
+---
+
+```{r setup, include=FALSE}
+library(tidyverse)
+library(readxl)
+```
+
+# Exercise 1
+
+**Import the data set into a data frame and show the structure of the imported data using the str() command.**
+
+```{r}
+Cherry_Trees <- read_excel('data-raw/Example_5.xls', sheet='RawData', range='A5:C36')
+```
+
+# Exercise 2
+
+**Import the data set into a data frame and show the structure of the imported data using the tail() command which shows the last few rows of a data table. Make sure the Tesla values are NA where appropriate and that both -9999 and NA are imported as NA values.**
+
+```{r}
+Car_Data <- read_excel('data-raw/Example_3.xls', 
+                       sheet='data', 
+                       range='A1:L34', 
+                       na= c('NA', -9999))
+tail(Car_Data)
+```
